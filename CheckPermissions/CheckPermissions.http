@@ -1,0 +1,6 @@
+@CheckPermissions_HostAddress = http://localhost:5280
+
+GET {{CheckPermissions_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
