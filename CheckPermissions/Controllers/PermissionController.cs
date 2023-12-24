@@ -1,21 +1,19 @@
 ﻿using CheckPermissions.BusinessLayer.Services.Interfaces;
+using CheckPermissions.DataModel;
+using CheckPermissions.DataModel.Requests;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace CheckPermissions.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PermissionController : ControllerBase
+    public class PermissionController(IPermissionService permissionService) : ControllerBase
     {
-        private readonly IPermissionService _permissionService;
-
-        public PermissionController(IPermissionService permissionService)
-        {
-            _permissionService = permissionService ?? throw new ArgumentNullException(nameof(permissionService));
-        }
+        private readonly IPermissionService _permissionService = permissionService ?? throw new ArgumentNullException(nameof(permissionService));
 
         [HttpGet("Get/{userId}")]
-        [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Permission), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -23,8 +21,8 @@ namespace CheckPermissions.Controllers
         {
             try
             {
-                await _permissionService.Get(userId).ConfigureAwait(false);
-                return Ok();
+                var result = await _permissionService.Get(userId).ConfigureAwait(false);
+                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -32,17 +30,40 @@ namespace CheckPermissions.Controllers
             }
         }
 
-        [HttpGet("Create/{permissionName}/{roleId}")]
+        [HttpGet("GetAll")]
+        [ProducesResponseType(typeof(IEnumerable<Permission>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var result = await _permissionService.GetAll().ConfigureAwait(false);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+        }
+
+        [HttpPost("Create")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Create(string permissionName, int roleId)
+        public async Task<IActionResult> Create([Required][FromBody] CreatePermissionRequest request)
         {
             try
             {
-                await _permissionService.Create(permissionName, roleId).ConfigureAwait(false);
-                return Ok();
+                var exists = await _permissionService.Get(request).ConfigureAwait(false);
+                if (exists)
+                {
+                    return BadRequest("Permission already exists!");
+                }
+                await _permissionService.Create(request).ConfigureAwait(false);
+                return Ok("Permission created successfully!");
             }
             catch (Exception ex)
             {

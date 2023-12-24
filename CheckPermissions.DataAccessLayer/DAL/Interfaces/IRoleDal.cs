@@ -1,9 +1,14 @@
-﻿namespace CheckPermissions.DataAccessLayer.DAL.Interfaces
+﻿using CheckPermissions.DataModel;
+using CheckPermissions.DataModel.Requests;
+
+namespace CheckPermissions.DataAccessLayer.DAL.Interfaces
 {
     public interface IRoleDal
     {
-        Task Get(int userId);
-        Task Create(string roleName);
+        Task<Role> Get(int userId);
+        Task<bool> Get(CreateRoleRequest request);
+        Task<IEnumerable<Role>> GetAll();
+        Task Create(CreateRoleRequest request);
         Task Delete(int roleId);
         Task Assign(int roleId, int userId);
     }

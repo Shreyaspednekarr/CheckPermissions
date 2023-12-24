@@ -8,25 +8,20 @@ namespace CheckPermissions.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RoleController : ControllerBase
+    public class ApplicationController(IApplicationService applicationService) : ControllerBase
     {
-        private readonly IRoleService _roleService;
+        private readonly IApplicationService _applicationService = applicationService ?? throw new ArgumentNullException(nameof(applicationService));
 
-        public RoleController(IRoleService roleService)
-        {
-            _roleService = roleService ?? throw new ArgumentNullException(nameof(roleService));
-        }
-
-        [HttpGet("Get/{userId}")]
-        [ProducesResponseType(typeof(Role), StatusCodes.Status200OK)]
+        [HttpGet("Get/{serviceId}")]
+        [ProducesResponseType(typeof(Service), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Get(int userId)
+        public async Task<IActionResult> Get(int serviceId)
         {
             try
             {
-                var result = await _roleService.Get(userId).ConfigureAwait(false);
+                var result = await _applicationService.Get(serviceId).ConfigureAwait(false);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -36,7 +31,7 @@ namespace CheckPermissions.Controllers
         }
 
         [HttpGet("GetAll")]
-        [ProducesResponseType(typeof(IEnumerable<Role>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<Service>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -44,7 +39,7 @@ namespace CheckPermissions.Controllers
         {
             try
             {
-                var result = await _roleService.GetAll().ConfigureAwait(false);
+                var result = await _applicationService.GetAll().ConfigureAwait(false);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -58,17 +53,17 @@ namespace CheckPermissions.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Create([Required][FromBody] CreateRoleRequest request)
+        public async Task<IActionResult> Create([Required][FromBody] CreateApplicationRequest request)
         {
             try
             {
-                var exists = await _roleService.Get(request).ConfigureAwait(false);
+                var exists = await _applicationService.Get(request).ConfigureAwait(false);
                 if (exists)
                 {
-                    return BadRequest("Role already exists!");
+                    return BadRequest("Application name already exists!");
                 }
-                await _roleService.Create(request).ConfigureAwait(false);
-                return Ok("Role created successfully!");
+                await _applicationService.Create(request).ConfigureAwait(false);
+                return Ok("Application name created successfully!");
             }
             catch (Exception ex)
             {
@@ -76,34 +71,16 @@ namespace CheckPermissions.Controllers
             }
         }
 
-        [HttpGet("Delete/{roleId}")]
+        [HttpGet("Delete/{serviceId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Delete(int roleId)
+        public async Task<IActionResult> Delete(int serviceId)
         {
             try
             {
-                await _roleService.Delete(roleId).ConfigureAwait(false);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
-
-        [HttpGet("Assign/{roleId}/{userId}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Assign(int roleId, int userId)
-        {
-            try
-            {
-                await _roleService.Assign(roleId, userId).ConfigureAwait(false);
+                await _applicationService.Delete(serviceId).ConfigureAwait(false);
                 return Ok();
             }
             catch (Exception ex)
