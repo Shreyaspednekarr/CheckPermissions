@@ -23,7 +23,9 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build CheckPermissions/CheckPermissions.csproj
-      working-directory: CheckPermissions
+      run: |
+        cd CheckPermissions 
+        dotnet restore
+        dotnet build --configuration Release
     - name: Test
       run: dotnet test --no-build --verbosity normal
