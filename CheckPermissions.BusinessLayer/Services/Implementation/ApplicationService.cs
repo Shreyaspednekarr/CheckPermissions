@@ -14,9 +14,9 @@ namespace CheckPermissions.BusinessLayer.Services.Implementation
             return await _unitOfWork.Application.Get(applicationId).ConfigureAwait(false);
         }
 
-        public async Task<bool> Get(CreateApplicationRequest request)
+        public async Task<bool> IsExists(CreateApplicationRequest request)
         {
-            return await _unitOfWork.Application.Get(request).ConfigureAwait(false);
+            return await _unitOfWork.Application.IsExists(request).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<Application>> GetAll()

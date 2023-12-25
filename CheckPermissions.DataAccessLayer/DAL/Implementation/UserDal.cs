@@ -16,7 +16,7 @@ namespace CheckPermissions.DataAccessLayer.DAL.Implementation
             return await _dbModel.Users.FirstOrDefaultAsync(x => x.Id == userId).ConfigureAwait(false);
         }
 
-        public async Task<bool> Get(CreateUserRequest request)
+        public async Task<bool> IsExists(CreateUserRequest request)
         {
             return _dbModel.Users.Any(x => x.UserName.ToLower() == request.UserName.ToLower());
         }
@@ -51,6 +51,24 @@ namespace CheckPermissions.DataAccessLayer.DAL.Implementation
                 _dbModel.Users.Remove(user);
                 await _dbModel.SaveChangesAsync().ConfigureAwait(false);
                 return true;
+            }
+            return false;
+        }
+
+        public async Task<bool> CheckPermission(string applicationName, string permissionName, string userId)
+        {
+            var application = await _dbModel.Applications.FirstOrDefaultAsync(x => x.ApplicationName.ToLower() == applicationName.ToLower()).ConfigureAwait(false);
+            if (application != null)
+            {
+                var permission = await _dbModel.Permissions.FirstOrDefaultAsync(x => x.PermissionName.ToLower() == permissionName.ToLower()).ConfigureAwait(false);
+                if (permission != null)
+                {
+                    var userPermission = await _dbModel.UserPermissions.FirstOrDefaultAsync(x => x.UserId == Convert.ToInt32(userId) && x.PermissionId == permission.Id).ConfigureAwait(false);
+                    if (userPermission != null)
+                    {
+                        return true;
+                    }
+                }
             }
             return false;
         }

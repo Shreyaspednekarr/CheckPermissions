@@ -57,7 +57,7 @@ namespace CheckPermissions.Controllers
         {
             try
             {
-                var exists = await _applicationService.Get(request).ConfigureAwait(false);
+                var exists = await _applicationService.IsExists(request).ConfigureAwait(false);
                 if (exists)
                 {
                     return BadRequest("Application name already exists!");

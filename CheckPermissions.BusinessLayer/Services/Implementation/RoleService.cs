@@ -14,9 +14,9 @@ namespace CheckPermissions.BusinessLayer.Services.Implementation
             return await _unitOfWork.Role.Get(userId).ConfigureAwait(false);
         }
 
-        public async Task<bool> Get(CreateRoleRequest request)
+        public async Task<bool> IsExists(CreateRoleRequest request)
         {
-            return await _unitOfWork.Role.Get(request).ConfigureAwait(false);
+            return await _unitOfWork.Role.IsExists(request).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<Role>> GetAll()

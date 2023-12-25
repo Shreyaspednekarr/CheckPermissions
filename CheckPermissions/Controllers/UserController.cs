@@ -57,7 +57,7 @@ namespace CheckPermissions.Controllers
         {
             try
             {
-                var exists = await _userService.Get(request).ConfigureAwait(false);
+                var exists = await _userService.IsExists(request).ConfigureAwait(false);
                 if (exists)
                 {
                     return BadRequest("User name already exist!");

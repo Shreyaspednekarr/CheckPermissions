@@ -9,14 +9,14 @@ namespace CheckPermissions.BusinessLayer.Services.Implementation
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
 
-        public async Task<Permission> Get(int userId)
+        public async Task<Permission> Get(int permissionId)
         {
-            return await _unitOfWork.Permission.Get(userId).ConfigureAwait(false);
+            return await _unitOfWork.Permission.Get(permissionId).ConfigureAwait(false);
         }
 
-        public async Task<bool> Get(CreatePermissionRequest request)
+        public async Task<bool> IsExists(CreatePermissionRequest request)
         {
-            return await _unitOfWork.Permission.Get(request).ConfigureAwait(false);
+            return await _unitOfWork.Permission.IsExists(request).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<Permission>> GetAll()
@@ -34,9 +34,9 @@ namespace CheckPermissions.BusinessLayer.Services.Implementation
             return await _unitOfWork.Permission.Delete(permissionId).ConfigureAwait(false);
         }
 
-        public async Task Assign(int permissionId, int userId)
+        public async Task Assign(AssignPermissionRequest request)
         {
-            await _unitOfWork.Permission.Assign(permissionId, userId).ConfigureAwait(false);
+            await _unitOfWork.Permission.Assign(request).ConfigureAwait(false);
         }
     }
 }

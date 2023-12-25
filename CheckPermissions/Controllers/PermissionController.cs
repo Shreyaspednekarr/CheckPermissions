@@ -12,16 +12,16 @@ namespace CheckPermissions.Controllers
     {
         private readonly IPermissionService _permissionService = permissionService ?? throw new ArgumentNullException(nameof(permissionService));
 
-        [HttpGet("Get/{userId}")]
+        [HttpGet("Get/{permissionId}")]
         [ProducesResponseType(typeof(Permission), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Get(int userId)
+        public async Task<IActionResult> Get(int permissionId)
         {
             try
             {
-                var result = await _permissionService.Get(userId).ConfigureAwait(false);
+                var result = await _permissionService.Get(permissionId).ConfigureAwait(false);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -57,7 +57,7 @@ namespace CheckPermissions.Controllers
         {
             try
             {
-                var exists = await _permissionService.Get(request).ConfigureAwait(false);
+                var exists = await _permissionService.IsExists(request).ConfigureAwait(false);
                 if (exists)
                 {
                     return BadRequest("Permission already exists!");
@@ -93,16 +93,16 @@ namespace CheckPermissions.Controllers
             }
         }
 
-        [HttpGet("Assign/{permissionId}/{userId}")]
+        [HttpPost("Assign")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Assign(int permissionId, int userId)
+        public async Task<IActionResult> Assign(AssignPermissionRequest request)
         {
             try
             {
-                await _permissionService.Assign(permissionId, userId).ConfigureAwait(false);
+                await _permissionService.Assign(request).ConfigureAwait(false);
                 return Ok();
             }
             catch (Exception ex)

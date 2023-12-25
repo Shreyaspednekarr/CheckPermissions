@@ -15,7 +15,7 @@ namespace CheckPermissions.DataAccessLayer.DAL.Implementation
             return await _dbModel.Applications.FirstOrDefaultAsync(x => x.Id == applicationId).ConfigureAwait(false);
         }
 
-        public async Task<bool> Get(CreateApplicationRequest request)
+        public async Task<bool> IsExists(CreateApplicationRequest request)
         {
             return _dbModel.Applications.Any(x => x.ApplicationName.ToLower() == request.ApplicationName.ToLower());
         }

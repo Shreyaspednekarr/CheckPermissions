@@ -10,12 +10,12 @@ namespace CheckPermissions.DataAccessLayer.DAL.Implementation
     {
         private readonly CheckPermissionsDbModel _dbModel = dbModel ?? throw new ArgumentNullException(nameof(dbModel));
 
-        public async Task<Permission> Get(int userId)
+        public async Task<Permission> Get(int permissionId)
         {
-            return await _dbModel.Permissions.FirstOrDefaultAsync(x => x.Id == userId).ConfigureAwait(false);
+            return await _dbModel.Permissions.FirstOrDefaultAsync(x => x.Id == permissionId).ConfigureAwait(false);
         }
 
-        public async Task<bool> Get(CreatePermissionRequest request)
+        public async Task<bool> IsExists(CreatePermissionRequest request)
         {
             return _dbModel.Permissions.Any(x => x.PermissionName.ToLower() == request.PermissionName.ToLower());
         }
@@ -56,7 +56,7 @@ namespace CheckPermissions.DataAccessLayer.DAL.Implementation
             return false;
         }
 
-        public async Task Assign(int permissionId, int userId)
+        public async Task Assign(AssignPermissionRequest request)
         {
 
         }

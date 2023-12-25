@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckPermissions.DataAccess
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckPermissions.BusinessLayer", "..\CheckPermissions.BusinessLayer\CheckPermissions.BusinessLayer.csproj", "{DA2AFF4F-D03E-489C-97D9-5962D7CD623D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckPermissions.DataModel", "..\CheckPermissions.DataModel\CheckPermissions.DataModel.csproj", "{6B263306-3B90-4BC5-A333-4BDE5302B8C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CheckPermissions.DataModel", "..\CheckPermissions.DataModel\CheckPermissions.DataModel.csproj", "{6B263306-3B90-4BC5-A333-4BDE5302B8C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CheckPermissions.AuthGuard", "..\CheckPermissions.AuthGuard\CheckPermissions.AuthGuard.csproj", "{15CEAD77-ADE9-4151-B6A6-57623AC984F4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{6B263306-3B90-4BC5-A333-4BDE5302B8C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6B263306-3B90-4BC5-A333-4BDE5302B8C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6B263306-3B90-4BC5-A333-4BDE5302B8C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15CEAD77-ADE9-4151-B6A6-57623AC984F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15CEAD77-ADE9-4151-B6A6-57623AC984F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15CEAD77-ADE9-4151-B6A6-57623AC984F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15CEAD77-ADE9-4151-B6A6-57623AC984F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

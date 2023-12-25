@@ -24,12 +24,16 @@ var configuration = new ConfigurationBuilder()
 builder.Services.AddDbContext<CheckPermissionsDbModel>(options =>
     options.UseSqlServer(configuration["ConnectionStrings:Database"]));
 
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IApplicationService, ApplicationService>();
 builder.Services.AddScoped<IPermissionService, PermissionService>();
 builder.Services.AddScoped<IRoleService, RoleService>();
+
+builder.Services.AddScoped<IUserDal, UserDal>();
 builder.Services.AddScoped<IApplicationDal, ApplicationDal>();
 builder.Services.AddScoped<IPermissionDal, PermissionDal>();
 builder.Services.AddScoped<IRoleDal, RoleDal>();
+
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 var app = builder.Build();

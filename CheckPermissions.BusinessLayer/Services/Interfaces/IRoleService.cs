@@ -6,7 +6,7 @@ namespace CheckPermissions.BusinessLayer.Services.Interfaces
     public interface IRoleService
     {
         Task<Role> Get(int userId);
-        Task<bool> Get(CreateRoleRequest request);
+        Task<bool> IsExists(CreateRoleRequest request);
         Task<IEnumerable<Role>> GetAll();
         Task Create(CreateRoleRequest request);
         Task<bool> Delete(int roleId);

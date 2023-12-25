@@ -6,7 +6,7 @@ namespace CheckPermissions.BusinessLayer.Services.Interfaces
     public interface IApplicationService
     {
         Task<Application> Get(int applicationId);
-        Task<bool> Get(CreateApplicationRequest request);
+        Task<bool> IsExists(CreateApplicationRequest request);
         Task<IEnumerable<Application>> GetAll();
         Task Create(CreateApplicationRequest request);
         Task<bool> Delete(int applicationId);

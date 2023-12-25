@@ -15,7 +15,7 @@ namespace CheckPermissions.DataAccessLayer.DAL.Implementation
             return await _dbModel.Roles.FirstOrDefaultAsync(x => x.Id == userId).ConfigureAwait(false);
         }
 
-        public async Task<bool> Get(CreateRoleRequest request)
+        public async Task<bool> IsExists(CreateRoleRequest request)
         {
             return _dbModel.Roles.Any(x => x.RoleName.ToLower() == request.RoleName.ToLower());
         }

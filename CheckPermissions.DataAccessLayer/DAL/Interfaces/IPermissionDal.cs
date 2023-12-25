@@ -5,11 +5,11 @@ namespace CheckPermissions.DataAccessLayer.DAL.Interfaces
 {
     public interface IPermissionDal
     {
-        Task<Permission> Get(int userId);
-        Task<bool> Get(CreatePermissionRequest request);
+        Task<Permission> Get(int permissionId);
+        Task<bool> IsExists(CreatePermissionRequest request);
         Task<IEnumerable<Permission>> GetAll();
         Task Create(CreatePermissionRequest request);
         Task<bool> Delete(int permissionId);
-        Task Assign(int permissionId, int userId);
+        Task Assign(AssignPermissionRequest request);
     }
 }
