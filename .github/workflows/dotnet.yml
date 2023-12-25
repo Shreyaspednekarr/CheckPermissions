@@ -23,6 +23,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build ..\CheckPermissions.BusinessLayer\CheckPermissions.BusinessLayer.csproj
+      run: dotnet build CheckPermissions/CheckPermissions.csproj
     - name: Test
       run: dotnet test --no-build --verbosity normal
