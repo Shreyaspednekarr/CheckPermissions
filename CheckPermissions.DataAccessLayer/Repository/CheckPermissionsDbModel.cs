@@ -15,6 +15,12 @@ namespace CheckPermissions.DataAccessLayer.Repository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Permission
+            modelBuilder.Entity<Permission>()
+                .HasOne(x => x.Application)
+                .WithMany(x => x.Permissions)
+                .HasForeignKey(x => x.ApplicationId);
+
             //UserRoles
             modelBuilder.Entity<UserRole>()
                 .HasKey(x => new { x.UserId, x.RoleId });

@@ -29,9 +29,9 @@ namespace CheckPermissions.BusinessLayer.Services.Implementation
             await _unitOfWork.Permission.Create(request).ConfigureAwait(false);
         }
 
-        public async Task Delete(int permissionId)
+        public async Task<bool> Delete(int permissionId)
         {
-            await _unitOfWork.Permission.Delete(permissionId).ConfigureAwait(false);
+            return await _unitOfWork.Permission.Delete(permissionId).ConfigureAwait(false);
         }
 
         public async Task Assign(int permissionId, int userId)

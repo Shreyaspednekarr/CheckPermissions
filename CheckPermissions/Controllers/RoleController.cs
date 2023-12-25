@@ -85,8 +85,12 @@ namespace CheckPermissions.Controllers
         {
             try
             {
-                await _roleService.Delete(roleId).ConfigureAwait(false);
-                return Ok();
+                var deleted = await _roleService.Delete(roleId).ConfigureAwait(false);
+                if (deleted)
+                {
+                    return Ok("Role deleted successfully!");
+                }
+                return BadRequest("Role doesn't exist!");
             }
             catch (Exception ex)
             {

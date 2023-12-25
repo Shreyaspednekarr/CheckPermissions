@@ -36,14 +36,23 @@ namespace CheckPermissions.DataAccessLayer.DAL.Implementation
             await _dbModel.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task Delete(int roleId)
+        public async Task<bool> Delete(int roleId)
         {
-            var role = await _dbModel.Roles.FirstOrDefaultAsync(x => x.Id == roleId).ConfigureAwait(false);
+            var role = await _dbModel.Roles
+                .FirstOrDefaultAsync(x => x.Id == roleId).ConfigureAwait(false);
+
             if (role != null)
             {
+                var userRoles = await _dbModel.UserRoles.Where(x => x.RoleId == role.Id).ToListAsync().ConfigureAwait(false);
+                var rolePermissions = await _dbModel.RolePermissions.Where(x => x.RoleId == role.Id).ToListAsync().ConfigureAwait(false);
+
+                _dbModel.UserRoles.RemoveRange(userRoles);
+                _dbModel.RolePermissions.RemoveRange(rolePermissions);
                 _dbModel.Roles.Remove(role);
+                await _dbModel.SaveChangesAsync().ConfigureAwait(false);
+                return true;
             }
-            await _dbModel.SaveChangesAsync().ConfigureAwait(false);
+            return false;
         }
 
         public async Task Assign(AssignRoleRequest request)

@@ -29,9 +29,9 @@ namespace CheckPermissions.BusinessLayer.Services.Implementation
             await _unitOfWork.Role.Create(request).ConfigureAwait(false);
         }
 
-        public async Task Delete(int roleId)
+        public async Task<bool> Delete(int roleId)
         {
-            await _unitOfWork.Role.Delete(roleId).ConfigureAwait(false);
+            return await _unitOfWork.Role.Delete(roleId).ConfigureAwait(false);
         }
 
         public async Task Assign(AssignRoleRequest request)

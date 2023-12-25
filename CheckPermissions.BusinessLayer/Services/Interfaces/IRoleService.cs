@@ -9,7 +9,7 @@ namespace CheckPermissions.BusinessLayer.Services.Interfaces
         Task<bool> Get(CreateRoleRequest request);
         Task<IEnumerable<Role>> GetAll();
         Task Create(CreateRoleRequest request);
-        Task Delete(int roleId);
+        Task<bool> Delete(int roleId);
         Task Assign(AssignRoleRequest request);
     }
 }

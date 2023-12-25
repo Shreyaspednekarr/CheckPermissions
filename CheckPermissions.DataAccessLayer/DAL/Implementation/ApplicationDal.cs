@@ -36,14 +36,31 @@ namespace CheckPermissions.DataAccessLayer.DAL.Implementation
             await _dbModel.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task Delete(int applicationId)
+        public async Task<bool> Delete(int applicationId)
         {
-            var service = await _dbModel.Applications.FirstOrDefaultAsync(x => x.Id == applicationId).ConfigureAwait(false);
-            if (service != null)
+            var application = await _dbModel.Applications
+                .Include(x => x.Permissions)
+                .FirstOrDefaultAsync(x => x.Id == applicationId).ConfigureAwait(false);
+
+            if (application != null)
             {
-                _dbModel.Applications.Remove(service);
+                if (application.Permissions.Count != 0)
+                {
+                    foreach (var permission in application.Permissions)
+                    {
+                        var userPermissions = await _dbModel.UserPermissions.Where(x => x.PermissionId == permission.Id).ToListAsync().ConfigureAwait(false);
+                        var rolePermissions = await _dbModel.RolePermissions.Where(x => x.PermissionId == permission.Id).ToListAsync().ConfigureAwait(false);
+
+                        _dbModel.UserPermissions.RemoveRange(userPermissions);
+                        _dbModel.RolePermissions.RemoveRange(rolePermissions);
+                    }
+                    _dbModel.Permissions.RemoveRange(application.Permissions);
+                }
+                _dbModel.Applications.Remove(application);
+                await _dbModel.SaveChangesAsync().ConfigureAwait(false);
+                return true;
             }
-            await _dbModel.SaveChangesAsync().ConfigureAwait(false);
+            return false;
         }
     }
 }

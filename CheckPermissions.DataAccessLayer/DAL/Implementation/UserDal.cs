@@ -3,6 +3,7 @@ using CheckPermissions.DataAccessLayer.Repository;
 using CheckPermissions.DataModel;
 using CheckPermissions.DataModel.Requests;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace CheckPermissions.DataAccessLayer.DAL.Implementation
 {
@@ -35,14 +36,23 @@ namespace CheckPermissions.DataAccessLayer.DAL.Implementation
             await _dbModel.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task Delete(int userId)
+        public async Task<bool> Delete(int userId)
         {
-            var user = await _dbModel.Users.FirstOrDefaultAsync(x => x.Id == userId).ConfigureAwait(false);
+            var user = await _dbModel.Users
+                .FirstOrDefaultAsync(x => x.Id == userId).ConfigureAwait(false);
+
             if (user != null)
             {
+                var userRoles = await _dbModel.UserRoles.Where(x => x.UserId == user.Id).ToListAsync().ConfigureAwait(false);
+                var userPermissions = await _dbModel.UserPermissions.Where(x => x.UserId == user.Id).ToListAsync().ConfigureAwait(false);
+
+                _dbModel.UserRoles.RemoveRange(userRoles);
+                _dbModel.UserPermissions.RemoveRange(userPermissions);
                 _dbModel.Users.Remove(user);
+                await _dbModel.SaveChangesAsync().ConfigureAwait(false);
+                return true;
             }
-            await _dbModel.SaveChangesAsync().ConfigureAwait(false);
+            return false;
         }
     }
 }

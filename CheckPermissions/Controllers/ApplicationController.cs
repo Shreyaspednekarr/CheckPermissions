@@ -80,8 +80,12 @@ namespace CheckPermissions.Controllers
         {
             try
             {
-                await _applicationService.Delete(applicationId).ConfigureAwait(false);
-                return Ok();
+                var deleted = await _applicationService.Delete(applicationId).ConfigureAwait(false);
+                if (deleted)
+                {
+                    return Ok("Application deleted successfully!");
+                }
+                return BadRequest("Application doesn't exist!");
             }
             catch (Exception ex)
             {

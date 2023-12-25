@@ -14,6 +14,7 @@ namespace CheckPermissions.DataModel
         public string? Description { get; set; }
 
         //Navigation property to represent the UserPermission relationship
+        public Application Application { get; set; }
         public ICollection<UserPermission> UserPermissions { get; set; }
         public ICollection<RolePermission> RolePermissions { get; set; }
     }

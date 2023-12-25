@@ -80,8 +80,12 @@ namespace CheckPermissions.Controllers
         {
             try
             {
-                await _permissionService.Delete(permissionId).ConfigureAwait(false);
-                return Ok();
+                var deleted = await _permissionService.Delete(permissionId).ConfigureAwait(false);
+                if (deleted)
+                {
+                    return Ok("Permission deleted successfully!");
+                }
+                return BadRequest("Permission doesn't exist!");
             }
             catch (Exception ex)
             {

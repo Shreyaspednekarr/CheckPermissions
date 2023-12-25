@@ -9,6 +9,6 @@ namespace CheckPermissions.DataAccessLayer.DAL.Interfaces
         Task<bool> Get(CreateUserRequest request);
         Task<IEnumerable<User>> GetAll();
         Task Create(CreateUserRequest request);
-        Task Delete(int userId);
+        Task<bool> Delete(int userId);
     }
 }

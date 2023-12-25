@@ -60,7 +60,7 @@ namespace CheckPermissions.Controllers
                 var exists = await _userService.Get(request).ConfigureAwait(false);
                 if (exists)
                 {
-                    return BadRequest("User name already exists!");
+                    return BadRequest("User name already exist!");
                 }
                 await _userService.Create(request).ConfigureAwait(false);
                 return Ok("User name created successfully!");
@@ -80,8 +80,12 @@ namespace CheckPermissions.Controllers
         {
             try
             {
-                await _userService.Delete(userId).ConfigureAwait(false);
-                return Ok();
+                var deleted = await _userService.Delete(userId).ConfigureAwait(false);
+                if (deleted)
+                {
+                    return Ok("User deleted successfully!");
+                }
+                return BadRequest("User doesn't exist!");
             }
             catch (Exception ex)
             {
