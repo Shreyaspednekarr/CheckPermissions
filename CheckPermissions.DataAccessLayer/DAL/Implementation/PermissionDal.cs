@@ -17,7 +17,7 @@ namespace CheckPermissions.DataAccessLayer.DAL.Implementation
 
         public async Task<bool> Get(CreatePermissionRequest request)
         {
-            return _dbModel.Permissions.Any(x => x.Name.ToLower() == request.PermissionName.ToLower());
+            return _dbModel.Permissions.Any(x => x.PermissionName.ToLower() == request.PermissionName.ToLower());
         }
 
         public async Task<IEnumerable<Permission>> GetAll()
@@ -29,8 +29,8 @@ namespace CheckPermissions.DataAccessLayer.DAL.Implementation
         {
             Permission permission = new()
             {
-                ServiceId = request.ServiceId,
-                Name = request.PermissionName,
+                ApplicationId = request.ApplicationId,
+                PermissionName = request.PermissionName,
                 Description = request.Description
             };
             await _dbModel.Permissions.AddAsync(permission).ConfigureAwait(false);

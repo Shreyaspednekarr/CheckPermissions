@@ -5,10 +5,10 @@ namespace CheckPermissions.DataAccessLayer.DAL.Interfaces
 {
     public interface IApplicationDal
     {
-        Task<Service> Get(int serviceId);
+        Task<Application> Get(int applicationId);
         Task<bool> Get(CreateApplicationRequest request);
-        Task<IEnumerable<Service>> GetAll();
+        Task<IEnumerable<Application>> GetAll();
         Task Create(CreateApplicationRequest request);
-        Task Delete(int serviceId);
+        Task Delete(int applicationId);
     }
 }

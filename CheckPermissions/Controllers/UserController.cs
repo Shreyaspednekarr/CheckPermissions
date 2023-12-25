@@ -8,20 +8,20 @@ namespace CheckPermissions.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ApplicationController(IApplicationService applicationService) : ControllerBase
+    public class UserController(IUserService userService) : ControllerBase
     {
-        private readonly IApplicationService _applicationService = applicationService ?? throw new ArgumentNullException(nameof(applicationService));
+        private readonly IUserService _userService = userService ?? throw new ArgumentNullException(nameof(userService));
 
-        [HttpGet("Get/{applicationId}")]
-        [ProducesResponseType(typeof(Application), StatusCodes.Status200OK)]
+        [HttpGet("Get/{userId}")]
+        [ProducesResponseType(typeof(User), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Get(int applicationId)
+        public async Task<IActionResult> Get(int userId)
         {
             try
             {
-                var result = await _applicationService.Get(applicationId).ConfigureAwait(false);
+                var result = await _userService.Get(userId).ConfigureAwait(false);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -31,7 +31,7 @@ namespace CheckPermissions.Controllers
         }
 
         [HttpGet("GetAll")]
-        [ProducesResponseType(typeof(IEnumerable<Application>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<User>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -39,7 +39,7 @@ namespace CheckPermissions.Controllers
         {
             try
             {
-                var result = await _applicationService.GetAll().ConfigureAwait(false);
+                var result = await _userService.GetAll().ConfigureAwait(false);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -53,17 +53,17 @@ namespace CheckPermissions.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Create([Required][FromBody] CreateApplicationRequest request)
+        public async Task<IActionResult> Create([Required][FromBody] CreateUserRequest request)
         {
             try
             {
-                var exists = await _applicationService.Get(request).ConfigureAwait(false);
+                var exists = await _userService.Get(request).ConfigureAwait(false);
                 if (exists)
                 {
-                    return BadRequest("Application name already exists!");
+                    return BadRequest("User name already exists!");
                 }
-                await _applicationService.Create(request).ConfigureAwait(false);
-                return Ok("Application name created successfully!");
+                await _userService.Create(request).ConfigureAwait(false);
+                return Ok("User name created successfully!");
             }
             catch (Exception ex)
             {
@@ -71,16 +71,16 @@ namespace CheckPermissions.Controllers
             }
         }
 
-        [HttpGet("Delete/{applicationId}")]
+        [HttpGet("Delete/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Delete(int applicationId)
+        public async Task<IActionResult> Delete(int userId)
         {
             try
             {
-                await _applicationService.Delete(applicationId).ConfigureAwait(false);
+                await _userService.Delete(userId).ConfigureAwait(false);
                 return Ok();
             }
             catch (Exception ex)

@@ -9,9 +9,9 @@ namespace CheckPermissions.BusinessLayer.Services.Implementation
     {
         private readonly IUnitOfWork _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
 
-        public async Task<Service> Get(int serviceId)
+        public async Task<Application> Get(int applicationId)
         {
-            return await _unitOfWork.Application.Get(serviceId).ConfigureAwait(false);
+            return await _unitOfWork.Application.Get(applicationId).ConfigureAwait(false);
         }
 
         public async Task<bool> Get(CreateApplicationRequest request)
@@ -19,7 +19,7 @@ namespace CheckPermissions.BusinessLayer.Services.Implementation
             return await _unitOfWork.Application.Get(request).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<Service>> GetAll()
+        public async Task<IEnumerable<Application>> GetAll()
         {
             return await _unitOfWork.Application.GetAll().ConfigureAwait(false);
         }
@@ -29,9 +29,9 @@ namespace CheckPermissions.BusinessLayer.Services.Implementation
             await _unitOfWork.Application.Create(request).ConfigureAwait(false);
         }
 
-        public async Task Delete(int serviceId)
+        public async Task Delete(int applicationId)
         {
-            await _unitOfWork.Application.Delete(serviceId).ConfigureAwait(false);
+            await _unitOfWork.Application.Delete(applicationId).ConfigureAwait(false);
         }
     }
 }

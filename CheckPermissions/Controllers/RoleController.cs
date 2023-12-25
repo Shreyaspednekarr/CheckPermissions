@@ -94,16 +94,16 @@ namespace CheckPermissions.Controllers
             }
         }
 
-        [HttpGet("Assign/{roleId}/{userId}")]
+        [HttpPost("Assign")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Assign(int roleId, int userId)
+        public async Task<IActionResult> Assign([Required][FromBody] AssignRoleRequest request)
         {
             try
             {
-                await _roleService.Assign(roleId, userId).ConfigureAwait(false);
+                await _roleService.Assign(request).ConfigureAwait(false);
                 return Ok();
             }
             catch (Exception ex)

@@ -10,38 +10,38 @@ namespace CheckPermissions.DataAccessLayer.DAL.Implementation
     {
         private readonly CheckPermissionsDbModel _dbModel = dbModel ?? throw new ArgumentNullException(nameof(dbModel));
 
-        public async Task<Service> Get(int serviceId)
+        public async Task<Application> Get(int applicationId)
         {
-            return await _dbModel.Services.FirstOrDefaultAsync(x => x.Id == serviceId).ConfigureAwait(false);
+            return await _dbModel.Applications.FirstOrDefaultAsync(x => x.Id == applicationId).ConfigureAwait(false);
         }
 
         public async Task<bool> Get(CreateApplicationRequest request)
         {
-            return _dbModel.Services.Any(x => x.Name.ToLower() == request.ApplicationName.ToLower());
+            return _dbModel.Applications.Any(x => x.ApplicationName.ToLower() == request.ApplicationName.ToLower());
         }
 
-        public async Task<IEnumerable<Service>> GetAll()
+        public async Task<IEnumerable<Application>> GetAll()
         {
-            return await _dbModel.Services.ToListAsync().ConfigureAwait(false);
+            return await _dbModel.Applications.ToListAsync().ConfigureAwait(false);
         }
 
         public async Task Create(CreateApplicationRequest request)
         {
-            Service service = new()
+            Application application = new()
             {
-                Name = request.ApplicationName.ToLower(),
+                ApplicationName = request.ApplicationName.ToLower(),
                 Description = request.Description
             };
-            await _dbModel.Services.AddAsync(service).ConfigureAwait(false);
+            await _dbModel.Applications.AddAsync(application).ConfigureAwait(false);
             await _dbModel.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task Delete(int serviceId)
+        public async Task Delete(int applicationId)
         {
-            var service = await _dbModel.Services.FirstOrDefaultAsync(x => x.Id == serviceId).ConfigureAwait(false);
+            var service = await _dbModel.Applications.FirstOrDefaultAsync(x => x.Id == applicationId).ConfigureAwait(false);
             if (service != null)
             {
-                _dbModel.Services.Remove(service);
+                _dbModel.Applications.Remove(service);
             }
             await _dbModel.SaveChangesAsync().ConfigureAwait(false);
         }

@@ -17,7 +17,7 @@ namespace CheckPermissions.DataAccessLayer.DAL.Implementation
 
         public async Task<bool> Get(CreateRoleRequest request)
         {
-            return _dbModel.Roles.Any(x => x.Name.ToLower() == request.RoleName.ToLower());
+            return _dbModel.Roles.Any(x => x.RoleName.ToLower() == request.RoleName.ToLower());
         }
 
         public async Task<IEnumerable<Role>> GetAll()
@@ -29,7 +29,7 @@ namespace CheckPermissions.DataAccessLayer.DAL.Implementation
         {
             Role role = new()
             {
-                Name = request.RoleName,
+                RoleName = request.RoleName,
                 Description = request.Description,
             };
             await _dbModel.Roles.AddAsync(role).ConfigureAwait(false);
@@ -46,7 +46,7 @@ namespace CheckPermissions.DataAccessLayer.DAL.Implementation
             await _dbModel.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task Assign(int roleId, int userId)
+        public async Task Assign(AssignRoleRequest request)
         {
 
         }
